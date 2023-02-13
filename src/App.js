@@ -29,14 +29,26 @@ function App() {
     setError(null);
     try {
       const response = await fetch(
-        "https://official-joke-api.appspot.com/jokes/programming/ten"
+        // "https://official-joke-api.appspot.com/jokes/programming/ten"
+        "https://react-course-http-e06d8-default-rtdb.firebaseio.com/jokes.json"
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
       const data = await response.json();
 
-      setJokes(data);
+      const loadedJokes = [];
+
+      for (const key in data) {
+        loadedJokes.push({
+          id: key,
+          type: data[key].type,
+          setup: data[key].setup,
+          punchline: data[key].punchline,
+        });
+      }
+
+      setJokes(loadedJokes);
       setIsLoading(false);
     } catch (error) {
       setError(error.message);
@@ -48,12 +60,24 @@ function App() {
     fetchJokesHandler();
   }, [fetchJokesHandler]);
 
-  const addJokeHandler = (joke) => {
+  async function addJokeHandler(joke) {
     // setJokes((prevJokes) => {
     //   return [joke, ...prevJokes];
     // });
     console.log(joke);
-  };
+    const response = await fetch(
+      "https://react-course-http-e06d8-default-rtdb.firebaseio.com/jokes.json",
+      {
+        method: "POST",
+        body: JSON.stringify(joke),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  }
 
   return (
     <React.Fragment>
