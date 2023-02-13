@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import JokeList from "./components/JokeList";
 import "./App.css";
@@ -23,12 +23,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  async function fetchJokesHandler() {
+  const fetchJokesHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await fetch(
-        "https://official-joke-api.appspot.com/jokes/programming/te"
+        "https://official-joke-api.appspot.com/jokes/programming/ten"
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -41,7 +41,11 @@ function App() {
       setError(error.message);
     }
     setIsLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    fetchJokesHandler();
+  }, [fetchJokesHandler]);
 
   return (
     <React.Fragment>
