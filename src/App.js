@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 
 import JokeList from "./components/JokeList";
 import "./App.css";
+import AddJoke from "./components/AddJoke";
 
 function App() {
   // const dummyJokes = [
@@ -47,8 +48,18 @@ function App() {
     fetchJokesHandler();
   }, [fetchJokesHandler]);
 
+  const addJokeHandler = (joke) => {
+    // setJokes((prevJokes) => {
+    //   return [joke, ...prevJokes];
+    // });
+    console.log(joke);
+  };
+
   return (
     <React.Fragment>
+      <section>
+        <AddJoke onAddJoke={addJokeHandler} />
+      </section>
       <section>
         <button onClick={fetchJokesHandler}>Fetch Jokes</button>
       </section>
