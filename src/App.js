@@ -21,14 +21,13 @@ function App() {
 
   const [jokes, setJokes] = React.useState([]);
 
-  function fetchJokesHandler() {
-    fetch("https://official-joke-api.appspot.com/jokes/programming/ten")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setJokes(data);
-      });
+  async function fetchJokesHandler() {
+    const response = await fetch(
+      "https://official-joke-api.appspot.com/jokes/programming/ten"
+    );
+
+    const data = await response.json();
+    setJokes(data);
   }
 
   return (
