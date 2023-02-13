@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import JokeList from "./components/JokeList";
 import "./App.css";
@@ -19,15 +19,18 @@ function App() {
   //   },
   // ];
 
-  const [jokes, setJokes] = React.useState([]);
+  const [jokes, setJokes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function fetchJokesHandler() {
+    setIsLoading(true);
     const response = await fetch(
       "https://official-joke-api.appspot.com/jokes/programming/ten"
     );
 
     const data = await response.json();
     setJokes(data);
+    setIsLoading(false);
   }
 
   return (
@@ -36,7 +39,9 @@ function App() {
         <button onClick={fetchJokesHandler}>Fetch Jokes</button>
       </section>
       <section>
-        <JokeList jokes={jokes} />
+        {!isLoading && jokes.length > 0 && <JokeList jokes={jokes} />}
+        {!isLoading && jokes.length === 0 && <p>No jokes found.</p>}
+        {isLoading && <p>Loading...</p>}
       </section>
     </React.Fragment>
   );
